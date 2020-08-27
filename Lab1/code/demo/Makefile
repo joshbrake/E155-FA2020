@@ -11,7 +11,7 @@
 all:
 	@echo "Make targets"
 
-build: main.c core.S STM32F401RE_simple.ld
+build: main.c core.s STM32F401RE_simple.ld
 	@echo
 	@echo "Build production image"
 	arm-none-eabi-cpp main.c -o main.i
@@ -28,4 +28,3 @@ clean:
 	rm -f *.i
 	rm -f *.elf
 	rm -f *.bin
-	rm -f *.s
