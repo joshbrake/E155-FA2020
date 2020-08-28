@@ -52,6 +52,10 @@ reset_handler:
     LDR r0, =_estack
     MOV sp, r0
 
+    // Set some dummy values. When we see these values in our debugger, we'll
+    // know that our program is loaded and working properly on the chip.
+    LDR  r7, =0xDEADBEEF
+
     BL main
     BX lr
 .size reset_handler, .-reset_handler
