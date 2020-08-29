@@ -3,22 +3,18 @@
 
 #include "STM32F401RE_GPIO.h"
 
-void pinMode(int pin, int function)
-{
+void pinMode(int pin, int function) {
 
 }
 
-int digitalRead(int pin)
-{
+int digitalRead(int pin) {
 
 }
 
-void digitalWrite(int pin, int val)
-{
+void digitalWrite(int pin, int val) {
 
 }
 
-void togglePin(int pin)
-{
+void togglePin(int pin) {
 
 }
