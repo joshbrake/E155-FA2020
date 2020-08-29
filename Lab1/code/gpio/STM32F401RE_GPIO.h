@@ -9,7 +9,7 @@
 // TODO: Fill in "<XXXXXXXX>" with correct base address
 #define GPIOA_BASE  (0x<XXXXXXXX>)
 
-// TODO: Put bitfield structs here
+// TODO: Fill out structure here
 typedef struct {
     volatile uint32_t GPIO_MODER; // GPIO Offset 0x00 GPIO port mode register
     // TODO: Fill in the rest of the registers here
