@@ -22,8 +22,3 @@ void togglePin(int pin)
 {
 
 }
-
-void pinResistor(int pin, int setting)
-{
-    
-}
