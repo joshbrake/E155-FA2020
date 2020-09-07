@@ -22,7 +22,7 @@ typedef struct {
 // Function prototypes
 ///////////////////////////////////////////////////////////////////////////////
 
-void pinMode();
+void pinMode(int pin, int function);
 
 int digitalRead(int pin);
 
