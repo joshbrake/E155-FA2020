@@ -20,14 +20,6 @@ void ms_delay(int ms) {
 }
 
 int main(void) {
-    configureFlash();
-
-    /* TODO: Configure MCO1 to:
-        1. output PLL clock
-        2. Set prescaler to divide by 4
-    */
-
-
     /* TODO: Configure APB prescalers
         1. Set APB2 (high-speed bus) prescaler to no division
         2. Set APB1 (low-speed bus) to divide by 2.
