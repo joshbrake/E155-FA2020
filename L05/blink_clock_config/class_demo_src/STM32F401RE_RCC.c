@@ -4,9 +4,9 @@
 #include "STM32F401RE_RCC.h"
 
 void configurePLL() {
-    /* TODO: Set clock to 48 MHz
+    /* TODO: Set clock to 24 MHz
      Output freq = (src_clk) * (N/M) / P
-     (8 MHz) * (N/M) / P = 42 MHz
+     (8 MHz) * (N/M) / P = 24 MHz
      M:XX, N:XX, P:XX
      Use HSE as PLLSRC
     */
