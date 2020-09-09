@@ -4,25 +4,25 @@
 #include "STM32F401RE_RCC.h"
 
 void configurePLL() {
-    // Set clock to 84 MHz
-    // Output freq = (src_clk) * (N/M) / P
-    // (8 MHz) * (336/16) / 4 = 42 MHz
-    // M:16, N:336, P:4, Q:7
-    // Use HSE as PLLSRC
+    /* TODO: Set clock to 48 MHz
+     Output freq = (src_clk) * (N/M) / P
+     (8 MHz) * (N/M) / P = 42 MHz
+     M:XX, N:XX, P:XX
+     Use HSE as PLLSRC
+    */
 
     RCC->CR.PLLON = 0; // Turn off PLL
     while (RCC->CR.PLLRDY != 0); // Wait till PLL is unlocked (e.g., off)
 
-    // Load configuration
-    RCC->PLLCFGR.PLLSRC = PLLSRC_HSE;
-    RCC->PLLCFGR.PLLM = 8;
-    RCC->PLLCFGR.PLLN = 336;
-    RCC->PLLCFGR.PLLP = 0b01;
-    RCC->PLLCFGR.PLLQ = 4;
+    /* TODO: Load configuration with the values shown above
+        1. Set PLLSRC
+        2. Set M
+        3. Set N
+        4. Set P
+    */
 
-    // Enable PLL and wait until it's locked
-    RCC->CR.PLLON = 1;
-    while(RCC->CR.PLLRDY == 0);
+    // TODO: Enable PLL and wait until it's locked (i.e., until PLLRDY goes high)
+
 }
 
 void configureClock(){
