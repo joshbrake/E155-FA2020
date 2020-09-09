@@ -12,7 +12,7 @@
 
 #define __IO volatile
 
-// Base addresses for GPIO ports
+// Base addresses
 #define RCC_BASE (0x40023800UL) // base address of RCC
 
 // PLL
@@ -25,7 +25,7 @@
 #define SW_PLL  2
 
 ///////////////////////////////////////////////////////////////////////////////
-// Bitfield struct for GPIO
+// Bitfield structs
 ///////////////////////////////////////////////////////////////////////////////
 typedef struct {
     volatile uint32_t HSION     : 1;
