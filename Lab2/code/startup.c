@@ -32,8 +32,7 @@ void startup()
     unsigned int * data_ram_start_p = &_DATA_RAM_START;
     unsigned int * data_ram_end_p = &_DATA_RAM_END;
 
-    while(data_ram_start_p != data_ram_end_p)
-    {
+    while(data_ram_start_p != data_ram_end_p) {
         *data_ram_start_p = *data_rom_start_p;
         data_ram_start_p++;
         data_rom_start_p++;
@@ -44,12 +43,10 @@ void startup()
     unsigned int * bss_start_p = &_BSS_START; 
     unsigned int * bss_end_p = &_BSS_END;
 
-    while(bss_start_p != bss_end_p)
-    {
+    while(bss_start_p != bss_end_p) {
         *bss_start_p = 0;
         bss_start_p++;
     }
-
 
     /* Call the `main()` function defined in `sort.s`.
      */
