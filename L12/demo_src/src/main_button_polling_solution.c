@@ -1,9 +1,9 @@
-// main.c
+// main_button_polling_solution.c
+// Josh Brake
+// jbrake@hmc.edu
+// 9/30/20
 
 #include "main.h"
-
-#define LED_PIN 5
-#define BUTTON_PIN 13 // PC13
 
 int main(void) {
     configureFlash();
@@ -17,6 +17,10 @@ int main(void) {
     RCC->AHB1ENR.GPIOCEN = 1;
     pinMode(GPIOC, BUTTON_PIN, GPIO_INPUT);
 
+    // Initialize timer
+    RCC->APB1ENR |= (1 << 0); // TIM2EN
+    initTIM(DELAY_TIM);
+
     uint8_t volatile cur_button_state = digitalRead(GPIOC, BUTTON_PIN);
     uint8_t volatile led_state = 0;
     uint8_t volatile prev_button_state = cur_button_state;
@@ -28,5 +32,6 @@ int main(void) {
             led_state = !led_state;
             digitalWrite(GPIOA, LED_PIN, led_state);
         }
+        delay_millis(DELAY_TIM, 200);
     }
 }

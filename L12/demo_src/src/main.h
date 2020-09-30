@@ -1,9 +1,35 @@
 // main.h
+// Josh Brake
+// jbrake@hmc.edu
+// 9/30/20
 
 #ifndef MAIN_H
 #define MAIN_H
 
 #include "STM32F401RE.h"
+
+///////////////////////////////////////////////////////////////////////////////
+// Custom defines
+///////////////////////////////////////////////////////////////////////////////
+
+#define LED_PIN 5
+#define BUTTON_PIN 13 // PC13
+#define DELAY_TIM TIM2
+
+#define NVIC_ISER0 ((uint32_t *) 0xE000E100UL)
+#define NVIC_ISER1 ((uint32_t *) 0xE000E104UL)
+#define SYSCFG_EXTICR4 ((uint32_t *) (0x40013800UL + 0x14UL))
+
+typedef struct {
+    volatile uint32_t IMR;
+    volatile uint32_t EMR;
+    volatile uint32_t RTSR;
+    volatile uint32_t FTSR;
+    volatile uint32_t SWIER;
+    volatile uint32_t PR;
+}EXTI_TypeDef;
+
+#define EXTI ((EXTI_TypeDef *) 0x40013C00UL)
 
 ///////////////////////////////////////////////////////////////////////////////
 // IRQn_Type and __NVIC_PRIO_BITS from stm32f401xe.h

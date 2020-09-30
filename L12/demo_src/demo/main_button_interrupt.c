@@ -1,23 +1,9 @@
 // main_button_interrupt.c
+// Josh Brake
+// jbrake@hmc.edu
+// 9/30/20
 
 #include "main.h"
-
-#define LED_PIN 5
-#define BUTTON_PIN 13 // PC13
-
-#define NVIC_ISER1 ((uint32_t *) 0xE000E104UL)
-#define SYSCFG_EXTICR4 ((uint32_t *) (0x40013800UL + 0x14UL))
-
-typedef struct {
-    volatile uint32_t IMR;
-    volatile uint32_t EMR;
-    volatile uint32_t RTSR;
-    volatile uint32_t FTSR;
-    volatile uint32_t SWIER;
-    volatile uint32_t PR;
-}EXTI_TypeDef;
-
-#define EXTI ((EXTI_TypeDef *) 0x40013C00UL)
 
 int main(void) {
     configureFlash();
@@ -30,6 +16,11 @@ int main(void) {
     // Enable button as input
     RCC->AHB1ENR.GPIOCEN = 1;
     pinMode(GPIOC, BUTTON_PIN, GPIO_INPUT);
+
+    // Initialize timer
+    RCC->APB1ENR |= (1 << 0); // TIM2EN
+    initTIM(DELAY_TIM);
+
 
     // TODO
     // 1. Enable SYSCFG clock domain in RCC
@@ -44,10 +35,8 @@ int main(void) {
     // 3. Enable falling edge trigger
     // 4. Turn on EXTI interrupt in NVIC_ISER1
 
-    while(1){
-        
-        // TIM2_IRQHandler();
-        // delay_millis(TIM2, 1000);
+    while(1){   
+        delay_millis(TIM2, 200);
     }
 
 }
