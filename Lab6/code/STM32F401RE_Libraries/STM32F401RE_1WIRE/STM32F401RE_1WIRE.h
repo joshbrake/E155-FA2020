@@ -27,7 +27,6 @@
 
 /**
     Setups up a 1-Wire interface on ONEWIRE_PIN.
-    @return The area of the circle.
 */
 void setupOneWire(void);
 
@@ -69,7 +68,7 @@ void read_rom(uint8_t rom_code[8]);
 
 /**
     Reads the scratchpad code of the MAXIM 31820 device on the bus.
-    @param Array where rom_code should be written
+    @param Array where scratchpad should be written
 */
 void read_scratchpad(uint8_t scratchpad[8]);
 
