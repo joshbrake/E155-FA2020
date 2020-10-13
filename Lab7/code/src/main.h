@@ -15,8 +15,8 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 // Wifi Network Info (make sure to keep surrounding double quotes)
-#define SSID "<YOURSSIDHERE>"
-#define PASSWORD "<YOURPASSWORDHERE>"
+// #define SSID "<YOURSSIDHERE>"
+// #define PASSWORD "<YOURPASSWORDHERE>"
 
 #define NVIC_ISER0 ((uint32_t *) 0xE000E100UL)
 #define NVIC_ISER1 ((uint32_t *) 0xE000E104UL)
@@ -44,8 +44,8 @@ typedef struct {
 #define ESP_USART_ID USART1_ID
 #define TERM_USART_ID USART2_ID
 #define DELAY_TIM TIM2
-#define CMD_DELAY_MS 20
-#define BUFFER_SIZE 1024
+#define CMD_DELAY_MS 30
+#define BUFFER_SIZE 2048
 
 ///////////////////////////////////////////////////////////////////////////////
 // IRQn_Type and __NVIC_PRIO_BITS from stm32f401xe.h

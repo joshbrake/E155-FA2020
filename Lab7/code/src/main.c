@@ -13,7 +13,7 @@
 /** Initialize the ESP and print out IP address to terminal
  */
 void initESP8266(USART_TypeDef * ESP_USART, USART_TypeDef * TERM_USART){
-    uint8_t volatile str[512] = "";
+    uint8_t volatile str[BUFFER_SIZE] = "";
 
     // Disable echo
     sendString(ESP_USART, "ATE0\r\n");
@@ -58,24 +58,27 @@ void initESP8266(USART_TypeDef * ESP_USART, USART_TypeDef * TERM_USART){
 void serveWebpage(uint8_t str []) {
     USART_TypeDef * ESP_USART = id2Port(ESP_USART_ID);
     USART_TypeDef * TERM_USART = id2Port(TERM_USART_ID);
-    uint8_t cmd_response[512] = "";
+    uint8_t cmd_response[BUFFER_SIZE] = "";
 
     uint32_t str_length = strlen(str)+2;
-    uint8_t cmd[512] = "";
+    
 
+    memset(cmd_response, 0, BUFFER_SIZE);
     // Send to terminal what we're sending
     sendString(TERM_USART, "Serving: ");
     sendString(TERM_USART, str);
     sendString(TERM_USART, "\r\n");
 
     // Send HTML
+    memset(cmd_response, 0, BUFFER_SIZE);
+    uint8_t cmd[BUFFER_SIZE] = "";
     sprintf(cmd, "AT+CIPSEND=0,%d\r\n",str_length);
     sendString(ESP_USART, cmd);
     delay_millis(DELAY_TIM, CMD_DELAY_MS);
     readString(ESP_USART, cmd_response);
     sendString(TERM_USART, cmd_response);
 
-
+    memset(cmd_response, 0, BUFFER_SIZE);
     sendString(ESP_USART, str);
     sendString(ESP_USART, "\r\n");
     delay_millis(DELAY_TIM, CMD_DELAY_MS);
@@ -134,7 +137,7 @@ int main(void) {
     while(1) {
         // Clear temp_str buffer
         memset(http_request, 0, BUFFER_SIZE);
-        volatile uint32_t http_req_len;
+        volatile uint32_t http_req_len = 0;
 
         // Loop through and read any data available in the buffer
         if(is_data_available()) {
@@ -143,7 +146,7 @@ int main(void) {
                 readString(ESP_USART, temp_str); // Read in available bytes
                 strcat(http_request, temp_str); // Append to current http_request string
                 http_req_len = strlen(http_request); // Store length of request
-                delay_millis(DELAY_TIM, CMD_DELAY_MS); // Delay
+                delay_millis(DELAY_TIM, 20); // Delay
             } while(is_data_available()); // Check for end of transaction
 
             // Echo received string to the terminal
@@ -156,47 +159,51 @@ int main(void) {
             if(get_request == 1){
                 // Look for "REQ" in http_request
                 volatile uint8_t button_req = look_for_substring("REQ", http_request);
-                
-                /* Look for request data and process it
-                    If REQ=ON, then turn LED on.
-                    If REQ=OFF, then turn LED off.
-                    If we don't recognize the REQ, then send message to terminal and don't do anything.
-                */
-                if(button_req == 1){
-                    volatile uint8_t button_req_type;
-                    if(look_for_substring("=ON", http_request)) button_req_type = REQ_LED_ON;
-                    else if(look_for_substring("=OFF", http_request)) button_req_type = REQ_LED_OFF;
-                    else button_req_type = REQ_UNKNOWN;
+                volatile uint8_t favicon_req = look_for_substring("favicon", http_request);
 
-                    switch(button_req_type){
-                        case REQ_LED_ON:
-                            digitalWrite(GPIOA, LED_PIN, 1);
-                            sendString(TERM_USART, "Turning LED on.\n");
-                            break;
-                        case REQ_LED_OFF:
-                            digitalWrite(GPIOA, LED_PIN, 0);
-                            sendString(TERM_USART, "Turning LED off.\n");
-                            break;
-                        case REQ_UNKNOWN:
-                            sendString(TERM_USART, "Unknown request.\n");
+                if(!favicon_req){
+                    
+                    /* Look for request data and process it
+                        If REQ=ON, then turn LED on.
+                        If REQ=OFF, then turn LED off.
+                        If we don't recognize the REQ, then send message to terminal and don't do anything.
+                    */
+                    if(button_req == 1){
+                        volatile uint8_t button_req_type;
+                        if(look_for_substring("=ON", http_request)) button_req_type = REQ_LED_ON;
+                        else if(look_for_substring("=OFF", http_request)) button_req_type = REQ_LED_OFF;
+                        else button_req_type = REQ_UNKNOWN;
+
+                        switch(button_req_type){
+                            case REQ_LED_ON:
+                                digitalWrite(GPIOA, LED_PIN, 1);
+                                sendString(TERM_USART, "Turning LED on.\n");
+                                break;
+                            case REQ_LED_OFF:
+                                digitalWrite(GPIOA, LED_PIN, 0);
+                                sendString(TERM_USART, "Turning LED off.\n");
+                                break;
+                            case REQ_UNKNOWN:
+                                sendString(TERM_USART, "Unknown request.\n");
+                        }
                     }
-                }
 
-                // Serve the individual HTML commands for the webpage
-                serveWebpage("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">");
-                serveWebpage("<title>ESP8266 Demo</title>");
-                serveWebpage("<style> body {background-color: #1c87c9;}</style>");
-                serveWebpage("<h3>ESP8266</h3>");
-                serveWebpage("<p>Welcome to MicroPs IoT lab!</p>");
-                serveWebpage("<form action=\"REQ=ON\"><input type=\"submit\" value = \"LED ON\"></form>");
-                serveWebpage("<form action=\"REQ=OFF\"><input type=\"submit\" value = \"LED OFF\"></form>");
+                    // Serve the individual HTML commands for the webpage
+                    serveWebpage("<!DOCTYPE html>");
+                    serveWebpage("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">");
+                    serveWebpage("<title>ESP8266 Demo</title>");
+                    serveWebpage("<h3>ESP8266</h3>");
+                    serveWebpage("<p>Welcome to MicroPs IoT lab!</p>");
+                    serveWebpage("<form action=\"REQ=ON\"><input type=\"submit\" value = \"LED ON\"></form>");
+                    serveWebpage("<form action=\"REQ=OFF\"><input type=\"submit\" value = \"LED OFF\"></form>");
 
-                // Read if LED is on or off and display to webpage.
-                if(digitalRead(GPIOA, LED_PIN)){
-                    serveWebpage("<p>LED is ON.</p>");
-                }
-                else {
-                    serveWebpage("<p>LED is OFF.</p>");
+                    // Read if LED is on or off and display to webpage.
+                    if(digitalRead(GPIOA, LED_PIN)){
+                        serveWebpage("<p>LED is ON.</p>");
+                    }
+                    else {
+                        serveWebpage("<p>LED is OFF.</p>");
+                    }
                 }
 
                 // Close connection
