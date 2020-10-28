@@ -94,14 +94,14 @@ int main(void) {
 }
 
 void TIM2_IRQHandler(void) {
+    // TODO
     // Clear update interrupt flag
-    TIM->SR &= ~(TIM_SR_UIF_Msk);
-
-    // Clear Stream 6 DMA flags
-    DMA1->HIFCR = (DMA_HIFCR_CTCIF6_Msk | DMA_HIFCR_CHTIF6_Msk | DMA_HIFCR_CTEIF6_Msk | DMA_HIFCR_CDMEIF6_Msk | DMA_HIFCR_CFEIF6_Msk);
     
+    // TODO
+    // Clear Stream 6 DMA flags
+    
+    // TODO
     // Reset number of bytes to transmit
-    DMA_STREAM->NDTR  = (uint16_t) CHAR_ARRAY_SIZE;
     
     // Re-enable DMA stream.
     DMA_STREAM->CR   |= DMA_SxCR_EN_Msk;
