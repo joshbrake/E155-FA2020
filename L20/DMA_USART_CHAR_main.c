@@ -70,7 +70,7 @@ int main(void) {
     // Set DMA data transfer length (# of samples).
     DMA1_Stream1->NDTR  = (uint16_t) CHAR_ARRAY_SIZE;
 
-    // Enable DMA1 Stream 5.
+    // Enable DMA1 Stream 1.
     DMA1_Stream1->CR   |= ( DMA_SxCR_EN_Msk );
 
     // TIM2 configuration.
