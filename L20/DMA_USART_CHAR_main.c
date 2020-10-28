@@ -38,7 +38,7 @@ int main(void) {
 
     USART->CR1 |= (USART_CR1_TE); // Enable USART2
 
-    // DMA1 configuration (channel 3 / stream 5).
+    // DMA1 configuration (channel 3 / stream 1).
     // SxCR register:
     // - Memory-to-peripheral
     // - Circular mode enabled.
@@ -46,7 +46,7 @@ int main(void) {
     // - 8-bit data size for both source and destination.
     // - High priority (2/3).
 
-    // Reset DMA1 Stream 5
+    // Reset DMA1 Stream 1
     DMA1_Stream1->CR &= ~( DMA_SxCR_CHSEL |
                             DMA_SxCR_PL |
                             DMA_SxCR_MSIZE |
