@@ -40,14 +40,13 @@ int main(void) {
 
     
     while(1){
-        // __WFI();
-        
-        volatile int pin_val = (GPIOA->IDR >> LED_PIN) & 0x1;
-        if(pin_val) GPIOA->BSRR = (1 << (LED_PIN + 16));
-        else GPIOA->BSRR = (1 << LED_PIN);
+        __WFI();
     }
 }
 
 void TIM2_IRQHandler(){
+    volatile int pin_val = (GPIOA->IDR >> LED_PIN) & 0x1;
+    if(pin_val) GPIOA->BSRR = (1 << (LED_PIN + 16));
+    else GPIOA->BSRR = (1 << LED_PIN);
     DELAY_TIM->SR &= ~TIM_SR_UIF;
 }
